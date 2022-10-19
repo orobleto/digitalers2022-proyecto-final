@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="private" author="true" classpath="C:\Users\Boreal\.m2\repository\junit\junit\4.11\junit-4.11.jar;C:\Users\Boreal\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\Boreal\.m2\repository\com\google\code\gson\gson\2.9.0\gson-2.9.0.jar;target/test-classes" destdir="doc" doctitle="Documentacion" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="com.octaviorobleto.commons.utilities.time,com.octaviorobleto.commons.utilities.text" source="1.8" sourcepath="target/generated-sources/annotations;target/generated-test-sources/test-annotations;src/test/java;src/main/java" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

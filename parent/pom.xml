@@ -6,5 +6,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>../backend</module>
+  	<module>../commons-utilities</module>
   </modules>
 </project>

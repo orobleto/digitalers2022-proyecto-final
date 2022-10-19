@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<Configuration status="INFO" monitorInterval="300">
+
+	<Properties>
+		<Property name="log-path">logs/
+		</Property>
+		<Property name="log-name">digitalers2022
+		</Property>
+	</Properties>
+
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level  -%l %c - %msg%n" />
+		</Console>
+		<RollingFile name="MyFileLog"
+			fileName="${log-path}/${log-name}.log"
+			filePattern="${log-path}/${log-name}-%d{yyyy-MM-dd}.log.gz">
+			<LevelRangeFilter minLevel="WARN" maxLevel="DEBUG"
+				onMatch="ACCEPT" onMismatch="DENY" />
+			<DefaultRolloverStrategy>
+				<Delete basePath="${log-path}">
+					<IfLastModified age="60d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level  -%l %c - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+		</RollingFile>
+		<RollingFile name="MyFileError"
+			fileName="${log-path}/${log-name}.error"
+			filePattern="${log-path}/${log-name}-%d{yyyy-MM-dd}.error.gz">
+			<LevelRangeFilter minLevel="FATAL" maxLevel="ERROR"
+				onMatch="ACCEPT" onMismatch="DENY" />
+			<DefaultRolloverStrategy>
+				<Delete basePath="${log-path}">
+					<IfLastModified age="30d" />
+				</Delete>
+			</DefaultRolloverStrategy>
+
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level  -%l %c - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="100MB" />
+			</Policies>
+		</RollingFile>
+
+	</Appenders>
+
+	<Loggers>
+		<Logger name="org.hibernate" level="off">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="MyFileError" />
+			<AppenderRef ref="MyFileLog" />
+		</Logger>
+
+		<Root level="all">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="MyFileError" />
+			<AppenderRef ref="MyFileLog" />
+		</Root>
+
+	</Loggers>
+
+</Configuration>
+
+
