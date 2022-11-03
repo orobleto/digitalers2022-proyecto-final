@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 public interface GenericRestController<T, ID> {
 
@@ -18,13 +19,16 @@ public interface GenericRestController<T, ID> {
 	ResponseEntity<?> findById(@PathVariable(name = "id", required = true) ID id);
 
 	@PostMapping(value = { "/insert" }, consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<?> insert(@RequestBody @Valid T t, BindingResult bindingResult);
+	ResponseEntity<?> insert(@RequestHeader(value = "credential", required = false) String uuid,
+			@RequestBody @Valid T t, BindingResult bindingResult);
 
 	@PutMapping(value = { "/update" }, consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<?> update(@RequestBody @Valid T t, BindingResult bindingResult);
+	ResponseEntity<?> update(@RequestHeader(value = "credential", required = false) String uuid,
+			@RequestBody @Valid T t, BindingResult bindingResult);
 
 	@DeleteMapping(value = { "/delete" }, consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<?> delete(@RequestBody @Valid T t, BindingResult bindingResult);
+	ResponseEntity<?> delete(@RequestHeader(value = "credential", required = false) String uuid,
+			@RequestBody @Valid T t, BindingResult bindingResult);
 
 	@GetMapping(value = { "/findAll" })
 	ResponseEntity<?> findAll();

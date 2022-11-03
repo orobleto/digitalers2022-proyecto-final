@@ -37,7 +37,7 @@ public class DataInitialize implements CommandLineRunner {
 
 		logger.info(userRepository.findById(1L));
 		logger.info(userRepository.findByEmail("user2@gmail.com"));
-
+		
 	}
 
 }

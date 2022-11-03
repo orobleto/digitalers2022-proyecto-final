@@ -15,6 +15,7 @@ import com.educaciontit.digitalers.dtos.UserDTO;
 import com.educaciontit.digitalers.dtos.repositories.UserDTOImpl;
 import com.educaciontit.digitalers.enums.MessageType;
 import com.educaciontit.digitalers.exceptions.ExceptionDTO;
+import com.educaciontit.digitalers.services.LoginService;
 import com.educaciontit.digitalers.services.ResponseMessageService;
 
 @RestController
@@ -28,6 +29,9 @@ public class UserController implements GenericRestController<UserDTO, Long> {
 	@Autowired
 	private ResponseMessageService responseMessageService;
 
+	@Autowired
+	private LoginService loginService;
+
 	public ResponseEntity<?> findById(Long id) {
 		logger.info("ID : " + id);
 		try {
@@ -40,17 +44,47 @@ public class UserController implements GenericRestController<UserDTO, Long> {
 		}
 	}
 
-	public ResponseEntity<?> insert(@Valid UserDTO userDTO, BindingResult bindingResult) {
+	public ResponseEntity<?> insert(String uuid, @Valid UserDTO userDTO, BindingResult bindingResult) {
+		logger.info("credential :" + uuid);
+
+		if (uuid == null) {
+			return ResponseEntity.status(400).body(responseMessageService.getResponseMessage(MessageType.BAD_REQUEST,
+					"credential [" + uuid + "] No encontrada"));
+		}
+		if (!loginService.validateLogin(uuid)) {
+			return ResponseEntity.status(409).body(responseMessageService
+					.getResponseMessage(MessageType.VALIDATION_ERROR, "credential [" + uuid + "] No encontrada"));
+		}
 
 		return save(userDTO, bindingResult);
 	}
 
-	public ResponseEntity<?> update(@Valid UserDTO userDTO, BindingResult bindingResult) {
+	public ResponseEntity<?> update(String uuid, @Valid UserDTO userDTO, BindingResult bindingResult) {
+		logger.info("credential :" + uuid);
 
+		if (uuid == null) {
+			return ResponseEntity.status(400).body(responseMessageService.getResponseMessage(MessageType.BAD_REQUEST,
+					"credential [" + uuid + "] No encontrada"));
+		}
+
+		if (!loginService.validateLogin(uuid)) {
+			return ResponseEntity.status(409).body(responseMessageService
+					.getResponseMessage(MessageType.VALIDATION_ERROR, "credential [" + uuid + "] No encontrada"));
+		}
 		return save(userDTO, bindingResult);
 	}
 
-	public ResponseEntity<?> delete(@Valid UserDTO userDTO, BindingResult bindingResult) {
+	public ResponseEntity<?> delete(String uuid, @Valid UserDTO userDTO, BindingResult bindingResult) {
+		logger.info("credential :" + uuid);
+
+		if (uuid == null) {
+			return ResponseEntity.status(400).body(responseMessageService.getResponseMessage(MessageType.BAD_REQUEST,
+					"credential [" + uuid + "] No encontrada"));
+		}
+		if (!loginService.validateLogin(uuid)) {
+			return ResponseEntity.status(409).body(responseMessageService
+					.getResponseMessage(MessageType.VALIDATION_ERROR, "credential [" + uuid + "] No encontrada"));
+		}
 		if (bindingResult.hasErrors()) {
 			return ResponseEntity.status(400)
 					.body(responseMessageService.getResponseMessage(MessageType.VALIDATION_ERROR, bindingResult));

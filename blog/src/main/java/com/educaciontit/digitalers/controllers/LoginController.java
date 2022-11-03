@@ -44,11 +44,22 @@ public class LoginController {
 	public ResponseEntity<?> signIn(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult) {
 
 		User user = userRepository.findByEmail(userLoginDTO.getEmail()).orElse(null);
-		logger.info(CodeUtils.AES_Decrypt(user.getKey(), user.getEmail().concat(KEY_AES)));
-		if (user == null
-				|| !CodeUtils.AES_Decrypt(user.getKey(), user.getEmail().concat(KEY_AES)).equals(userLoginDTO.getKey())) {
+		logger.info(user);
+		if (user == null) {
 			return ResponseEntity.status(404).body(
 					responseMessageService.getResponseMessage(MessageType.NO_ELEMENTS, "Credenciales Incorrectas"));
+		} else if (user.getFailedAttemps() > 2) {
+			return ResponseEntity.status(404)
+					.body(responseMessageService.getResponseMessage(MessageType.USER_BLOCKED, "Usuario Bloqueado"));
+		} else if (!CodeUtils.AES_Decrypt(user.getKey(), user.getEmail().concat(KEY_AES))
+				.equals(userLoginDTO.getKey())) {
+			userRepository.updateFailedAttemps((byte) (user.getFailedAttemps() + 1), user.getEmail());
+			return ResponseEntity.status(404).body(
+					responseMessageService.getResponseMessage(MessageType.NO_ELEMENTS, "Credenciales Incorrectas"));
+		}
+
+		if (user.getFailedAttemps() <= 2) {
+			userRepository.updateFailedAttemps((byte) 0, user.getEmail());
 		}
 
 		return ResponseEntity.ok(loginService.getLogin(userLoginDTO.getEmail()));
