@@ -1,0 +1,23 @@
+.menu {
+    overflow: hidden;
+    background-color: #107fc0 ;
+}
+
+.enlace {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 12px 16px;
+    text-decoration: none;
+}
+
+.enlace:hover{
+    background-color: #f2f2f2;
+    color: #2a3132;
+    cursor: pointer;
+}
+
+.active{
+    background-color: #1a4f6e ;
+}

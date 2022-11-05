@@ -15,6 +15,7 @@ import com.educaciontit.digitalers.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByEmail(String email);
+	
 
 	// HQL
 	// SQL
