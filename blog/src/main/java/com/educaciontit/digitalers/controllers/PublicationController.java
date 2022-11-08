@@ -64,7 +64,7 @@ public class PublicationController implements GenericRestController<Publication,
 
 	@GetMapping(value = { "/findByUserId/{id_user}" })
 	public ResponseEntity<?> findAll(@PathVariable(name = "id_user", required = true) Long id_user) {
-		// 
+		// uuid bu
 		
 		List<Publication> publications = publicationRepository.findByUserId(id_user);
 		logger.info(publications);
